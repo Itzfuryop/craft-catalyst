@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Craft Catalyst</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .checkout-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-lg) var(--spacing-md);
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: var(--spacing-lg);
+        }
+
+        .checkout-form {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+        }
+
+        .form-section {
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
+            transition: var(--transition-fast);
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+        }
+
+        .payment-options {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .payment-option {
+            flex: 1;
+            padding: var(--spacing-md);
+            background: var(--bg-primary);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            text-align: center;
+        }
+
+        .payment-option:hover {
+            border-color: var(--primary-color);
+        }
+
+        .payment-option.selected {
+            border-color: var(--primary-color);
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .payment-icon {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .payment-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .order-summary {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+
+        .summary-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-sm) 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .summary-divider {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin: var(--spacing-md) 0;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-md) 0;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .place-order-btn {
+            width: 100%;
+            padding: var(--spacing-md);
+            background: var(--primary-gradient);
+            color: var(--text-primary);
+            border-radius: var(--radius-md);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: var(--spacing-md);
+            box-shadow: var(--shadow-glow);
+            transition: var(--transition-normal);
+            cursor: pointer;
+            border: none;
+        }
+
+        .place-order-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+        }
+
+        .place-order-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+            padding: var(--spacing-sm);
+            background: rgba(0, 212, 170, 0.1);
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            color: var(--success-color);
+        }
+
+        .empty-cart-message {
+            text-align: center;
+            padding: var(--spacing-xl);
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+
+            .order-summary {
+                position: static;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-options {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loader"></div>
+        <p>Loading Checkout...</p>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notification" class="notification hidden">
+        <span id="notificationText"></span>
+    </div>
+
+    <!-- Top Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="menu-btn" id="menuBtn">☰</button>
+                <a href="../index.html" class="logo">
+                    <span class="logo-icon">⚡</span>
+                    <span class="logo-text">Craft Catalyst</span>
+                </a>
+            </div>
+            <div class="nav-center">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Search for project kits, supplies, essentials...">
+                    <button class="search-btn" onclick="performSearch()">🔍</button>
+                </div>
+            </div>
+            <div class="nav-right">
+                <button class="nav-icon" id="wishlistBtn" onclick="goToWishlist()">
+                    <span class="icon">❤️</span>
+                    <span class="badge" id="wishlistCount">0</span>
+                </button>
+                <button class="nav-icon" id="cartBtn" onclick="goToCart()">
+                    <span class="icon">🛒</span>
+                    <span class="badge" id="cartCount">0</span>
+                </button>
+                <button class="nav-icon" id="userBtn" onclick="toggleUserMenu()">
+                    <span class="icon">👤</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- User Dropdown Menu -->
+    <div id="userMenu" class="user-menu hidden">
+        <div class="user-menu-content">
+            <div id="userInfo" class="user-info"></div>
+            <a href="orders.html" class="menu-item">📦 My Orders</a>
+            <a href="wishlist.html" class="menu-item">❤️ Wishlist</a>
+            <a href="#" onclick="handleAuth()" class="menu-item" id="authBtn">🔐 Login</a>
+        </div>
+    </div>
+
+    <!-- Side Menu -->
+    <div id="sideMenu" class="side-menu">
+        <div class="side-menu-header">
+            <h3>Categories</h3>
+            <button class="close-btn" onclick="closeSideMenu()">✕</button>
+        </div>
+        <div class="side-menu-content">
+            <a href="category.html?cat=project-kits" class="menu-link">
+                <span class="menu-icon">🔧</span>
+                <span>Project Kits</span>
+            </a>
+            <a href="category.html?cat=project-items" class="menu-link">
+                <span class="menu-icon">🔩</span>
+                <span>Project Items</span>
+            </a>
+            <a href="category.html?cat=prints" class="menu-link">
+                <span class="menu-icon">🖨️</span>
+                <span>Printouts</span>
+            </a>
+            <a href="category.html?cat=essentials" class="menu-link">
+                <span class="menu-icon">🎒</span>
+                <span>Emergency Essentials</span>
+            </a>
+            <a href="category.html?cat=study" class="menu-link">
+                <span class="menu-icon">📚</span>
+                <span>Study Supplies</span>
+            </a>
+            <hr>
+            <a href="about.html" class="menu-link">
+                <span class="menu-icon">ℹ️</span>
+                <span>About Us</span>
+            </a>
+            <a href="contact.html" class="menu-link">
+                <span class="menu-icon">📞</span>
+                <span>Contact</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main style="min-height: 60vh;">
+        <div style="max-width: 1400px; margin: 0 auto; padding: var(--spacing-md);">
+            <h1 style="font-size: 2rem; margin-bottom: var(--spacing-md);">Checkout</h1>
+        </div>
+
+        <div class="checkout-container" id="checkoutContainer">
+            <!-- Checkout content will be loaded here -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Craft Catalyst</h3>
+                <p>Your one-stop shop for instant project supplies and study essentials delivery.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="about.html">About Us</a>
+                <a href="contact.html">Contact</a>
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Policy</a>
+            </div>
+            <div class="footer-section">
+                <h4>Categories</h4>
+                <a href="category.html?cat=project-kits">Project Kits</a>
+                <a href="category.html?cat=prints">Printouts</a>
+                <a href="category.html?cat=essentials">Essentials</a>
+                <a href="category.html?cat=study">Study Supplies</a>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p>📧 support@craftcatalyst.com</p>
+                <p>📞 +91 98765 43210</p>
+                <p>⏰ 24/7 Support</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Craft Catalyst. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="../index.html" class="bottom-nav-item">
+            <span class="bottom-nav-icon">🏠</span>
+            <span class="bottom-nav-label">Home</span>
+        </a>
+        <a href="category.html?cat=all" class="bottom-nav-item">
+            <span class="bottom-nav-icon">🔍</span>
+            <span class="bottom-nav-label">Browse</span>
+        </a>
+        <a href="cart.html" class="bottom-nav-item">
+            <span class="bottom-nav-icon">🛒</span>
+            <span class="bottom-nav-label">Cart</span>
+            <span class="bottom-nav-badge" id="bottomCartCount">0</span>
+        </a>
+        <a href="orders.html" class="bottom-nav-item">
+            <span class="bottom-nav-icon">📦</span>
+            <span class="bottom-nav-label">Orders</span>
+        </a>
+        <a href="wishlist.html" class="bottom-nav-item">
+            <span class="bottom-nav-icon">❤️</span>
+            <span class="bottom-nav-label">Wishlist</span>
+        </a>
+    </div>
+
+    <script src="../scripts/data.js"></script>
+    <script src="../scripts/utils.js"></script>
+    <script>
+        let selectedPayment = 'cod';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const ls = document.getElementById('loadingScreen');
+                if (ls) ls.classList.add('hidden');
+            }, 500);
+
+            updateCartCount();
+            updateWishlistCount();
+            updateUserInfo();
+            setupEventListeners();
+            loadCheckout();
+        });
+
+        function setupEventListeners() {
+            const menuBtn = document.getElementById('menuBtn');
+            if (menuBtn) menuBtn.addEventListener('click', toggleSideMenu);
+
+            const userBtn = document.getElementById('userBtn');
+            if (userBtn) userBtn.addEventListener('click', toggleUserMenu);
+
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') performSearch();
+                });
+            }
+
+            document.addEventListener('click', (e) => {
+                const sideMenu = document.getElementById('sideMenu');
+                const userMenu = document.getElementById('userMenu');
+                const menuBtn = document.getElementById('menuBtn');
+                const userBtn = document.getElementById('userBtn');
+
+                if (sideMenu && !sideMenu.contains(e.target) && e.target !== menuBtn) {
+                    sideMenu.classList.remove('active');
+                }
+
+                if (userMenu && !userMenu.contains(e.target) && e.target !== userBtn) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        function loadCheckout() {
+            const user = getCurrentUser();
+            const cartItems = getCart();
+            const container = document.getElementById('checkoutContainer');
+
+            // Check if user is logged in
+            if (!user) {
+                container.innerHTML = `
+                    <div class="empty-cart-message">
+                        <h2>Please login to checkout</h2>
+                        <p style="color: var(--text-secondary); margin: var(--spacing-md) 0;">
+                            You need to be logged in to place an order.
+                        </p>
+                        <a href="login.html?redirect=checkout" class="place-order-btn" style="display: inline-block; width: auto; padding: var(--spacing-sm) var(--spacing-xl); text-decoration: none; margin-top: 0;">
+                            Login Now
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Check if cart is empty
+            if (!cartItems || cartItems.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-cart-message">
+                        <h2>Your cart is empty</h2>
+                        <p style="color: var(--text-secondary); margin: var(--spacing-md) 0;">
+                            Add items to your cart before checkout.
+                        </p>
+                        <a href="category.html?cat=all" class="place-order-btn" style="display: inline-block; width: auto; padding: var(--spacing-sm) var(--spacing-xl); text-decoration: none; margin-top: 0;">
+                            Continue Shopping
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Display checkout form
+            displayCheckoutForm(user, cartItems);
+        }
+
+        function displayCheckoutForm(user, cartItems) {
+            const subtotal = getCartTotal();
+            const deliveryFee = subtotal >= 500 ? 0 : 40;
+            const tax = Math.round(subtotal * 0.18);
+            const total = subtotal + deliveryFee + tax;
+
+            const html = `
+                <div class="checkout-form">
+                    <!-- Delivery Information -->
+                    <div class="form-section">
+                        <h2 class="section-title">📦 Delivery Address</h2>
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-input" id="fullName" value="${user.name || ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-input" id="email" value="${user.email || ''}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-input" id="phone" placeholder="+91 XXXXX XXXXX" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-input" id="address" placeholder="Enter your street address" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">City</label>
+                                <input type="text" class="form-input" id="city" placeholder="Delhi" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Postal Code</label>
+                                <input type="text" class="form-input" id="postalCode" placeholder="110001" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="form-section">
+                        <h2 class="section-title">💳 Payment Method</h2>
+                        <div class="payment-options">
+                            <div class="payment-option selected" onclick="selectPayment('cod')">
+                                <div class="payment-icon">💵</div>
+                                <div class="payment-label">Cash on Delivery</div>
+                            </div>
+                            <div class="payment-option" onclick="selectPayment('card')">
+                                <div class="payment-icon">💳</div>
+                                <div class="payment-label">Debit/Credit Card</div>
+                            </div>
+                            <div class="payment-option" onclick="selectPayment('upi')">
+                                <div class="payment-icon">📱</div>
+                                <div class="payment-label">UPI</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terms & Conditions -->
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: var(--spacing-sm); cursor: pointer;">
+                                <input type="checkbox" id="terms" required>
+                                <span>I agree to the Terms & Conditions and Privacy Policy</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-summary">
+                    <h3 class="summary-title">Order Summary</h3>
+                    
+                    <div class="summary-item">
+                        <span>Subtotal</span>
+                        <span>${formatCurrency(subtotal)}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Delivery Fee</span>
+                        <span>${deliveryFee === 0 ? 'FREE' : formatCurrency(deliveryFee)}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Tax (18% GST)</span>
+                        <span>${formatCurrency(tax)}</span>
+                    </div>
+                    
+                    <div class="summary-divider"></div>
+                    
+                    <div class="summary-total">
+                        <span>Total Amount</span>
+                        <span>${formatCurrency(total)}</span>
+                    </div>
+
+                    ${deliveryFee > 0 ? `
+                        <div style="background: rgba(0, 212, 170, 0.1); padding: var(--spacing-sm); border-radius: var(--radius-sm); margin: var(--spacing-sm) 0; font-size: 0.85rem; color: var(--success-color);">
+                            💡 Add ${formatCurrency(500 - subtotal)} more for FREE delivery!
+                        </div>
+                    ` : ''}
+
+                    <button class="place-order-btn" onclick="placeOrder(${subtotal}, ${deliveryFee}, ${tax}, ${total})">
+                        Place Order
+                    </button>
+
+                    <div class="security-badge">
+                        🔒 Secure Payment • SSL Encrypted
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('checkoutContainer').innerHTML = html;
+        }
+
+        function selectPayment(method) {
+            selectedPayment = method;
+            
+            // Update UI
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.closest('.payment-option').classList.add('selected');
+        }
+
+        function placeOrder(subtotal, deliveryFee, tax, total) {
+            // Validate form
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const city = document.getElementById('city').value.trim();
+            const postalCode = document.getElementById('postalCode').value.trim();
+            const terms = document.getElementById('terms').checked;
+
+            if (!fullName || !email || !phone || !address || !city || !postalCode) {
+                showNotification('❌ Please fill all required fields', 'error');
+                return;
+            }
+
+            if (!terms) {
+                showNotification('❌ Please accept Terms & Conditions', 'error');
+                return;
+            }
+
+            // Create order
+            const cartItems = getCart();
+            const order = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                items: cartItems,
+                subtotal: subtotal,
+                delivery: deliveryFee,
+                tax: tax,
+                total: total,
+                status: 'confirmed',
+                payment: selectedPayment,
+                deliveryInfo: {
+                    name: fullName,
+                    email: email,
+                    phone: phone,
+                    address: address,
+                    city: city,
+                    postalCode: postalCode
+                }
+            };
+
+            // Save order
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders.push(order);
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            // Clear cart
+            localStorage.setItem('cart', JSON.stringify([]));
+
+            // Show success message
+            showNotification('✓ Order placed successfully!');
+            
+            // Redirect to orders page
+            setTimeout(() => {
+                window.location.href = 'orders.html';
+            }, 1500);
+        }
+
+        function toggleSideMenu() {
+            const sideMenu = document.getElementById('sideMenu');
+            if (sideMenu) sideMenu.classList.toggle('active');
+        }
+
+        function closeSideMenu() {
+            const sideMenu = document.getElementById('sideMenu');
+            if (sideMenu) sideMenu.classList.remove('active');
+        }
+
+        function toggleUserMenu() {
+            const userMenu = document.getElementById('userMenu');
+            if (userMenu) userMenu.classList.toggle('hidden');
+        }
+
+        function goToCart() {
+            window.location.href = 'cart.html';
+        }
+
+        function goToWishlist() {
+            window.location.href = 'wishlist.html';
+        }
+
+        function performSearch() {
+            const searchInput = document.getElementById('searchInput');
+            if (!searchInput) return;
+
+            const query = searchInput.value.trim();
+            if (!query) {
+                showNotification('Please enter a search term', 'error');
+                return;
+            }
+
+            window.location.href = `category.html?search=${encodeURIComponent(query)}`;
+        }
+
+        function handleAuth() {
+            const user = getCurrentUser();
+            if (user) {
+                logoutUser();
+                showNotification('✓ Logged out');
+                setTimeout(() => window.location.reload(), 800);
+            } else {
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>
