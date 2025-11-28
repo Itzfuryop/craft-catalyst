@@ -1,6 +1,3 @@
-// ============================================
-// Craft Catalyst E-COMMERCE - DATA MANAGEMENT
-// ============================================
 
 const productsData = [
     // PROJECT KITS
@@ -377,3 +374,4 @@ const config = {
         'STUDENT20': { discount: 20, type: 'percent' }
     }
 };
+
