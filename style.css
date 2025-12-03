@@ -1125,9 +1125,17 @@ input, textarea, select {
     }
 
     .product-image {
-        height: 110px;
-        font-size: 2rem;
+        width: 100%;
+        height: 80px;  /* smaller box height */
+        overflow: hidden;
     }
+
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;  /* important so it does not squash */
+    }
+
 
     .product-info {
         padding: 6px;
@@ -1144,6 +1152,7 @@ input, textarea, select {
 
     .product-price {
         font-size: 0.9rem;
+        color : #a4a8e7;
     }
 
     .add-to-cart-btn {
@@ -1185,7 +1194,7 @@ input, textarea, select {
     }
     
     .product-image {
-        height: 180px;
+        height: 110px;
     }
     
     .hero-btn {
