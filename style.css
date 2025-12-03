@@ -1,11 +1,11 @@
 :root {
-    /* Deep Gradient Colors */
+    
     --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --secondary-gradient: linear-gradient(135deg, #0a7a06 0%, #13ff1e 100%);
     --dark-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
     --card-gradient: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
     
-    /* Colors */
+
     --primary-color: #667eea;
     --secondary-color: #764ba2;
     --accent-color: #f5576c;
@@ -13,43 +13,43 @@
     --warning-color: #ffa726;
     --danger-color: #ef5350;
     
-    /* Background */
+
     --bg-dark: #0f0f1e;
     --bg-secondary: #1a1a2e;
     --bg-card: rgba(255, 255, 255, 0.08);
     --bg-card-hover: rgba(255, 255, 255, 0.12);
     
-    /* Text */
+
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.7);
     --text-muted: rgba(255, 255, 255, 0.5);
     
-    /* Spacing */
+
     --spacing-xs: 0.5rem;
     --spacing-sm: 1rem;
     --spacing-md: 1.5rem;
     --spacing-lg: 2rem;
     --spacing-xl: 3rem;
     
-    /* Border Radius */
+
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
     --radius-xl: 24px;
     
-    /* Shadows */
+
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2);
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
     --shadow-glow: 0 0 20px rgba(102, 126, 234, 0.3);
     
-    /* Transitions */
+
     --transition-fast: 0.2s ease;
     --transition-normal: 0.3s ease;
     --transition-slow: 0.5s ease;
 }
 
-/* ========== RESET & BASE ========== */
+
 * {
     margin: 0;
     padding: 0;
@@ -87,7 +87,7 @@ input, textarea, select {
     outline: none;
 }
 
-/* ========== LOADING SCREEN ========== */
+
 .loading-screen {
     position: fixed;
     top: 0;
@@ -128,7 +128,7 @@ input, textarea, select {
     color: var(--text-secondary);
 }
 
-/* ========== ONBOARDING SCREEN ========== */
+
 .onboarding-screen {
     position: fixed;
     top: 0;
@@ -271,7 +271,6 @@ input, textarea, select {
     transform: translateX(400px);
 }
 
-/* ========== OFFLINE POPUP ========== */
 .offline-popup {
     position: fixed;
     top: 0;
@@ -339,7 +338,7 @@ input, textarea, select {
     transform: translateY(-2px);
 }
 
-/* ========== NAVBAR ========== */
+
 .navbar {
     position: sticky;
     top: 0;
@@ -1251,4 +1250,5 @@ input, textarea, select {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--secondary-color);
 }
+
 
