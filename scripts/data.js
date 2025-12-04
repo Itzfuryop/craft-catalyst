@@ -1,3 +1,6 @@
+// ============================================
+// Craft Catalyst E-COMMERCE - DATA MANAGEMENT
+// ============================================
 
 const productsData = [
     // PROJECT KITS
@@ -5,7 +8,7 @@ const productsData = [
         id: 1,
         name: "Drone Starter Kit",
         description: "Beginner drone-building kit with motors & controller",
-        price: 3999,
+        price: 2999,
         category: "project-kits",
         image: "images/dronekit.jpeg",
         badge: "Trending"
@@ -14,7 +17,7 @@ const productsData = [
         id: 2,
         name: "Solar Energy Kit",
         description: "Build working solar-powered projects",
-        price: 499,
+        price: 399,
         category: "project-kits",
         image: "https://pplx-res.cloudinary.com/image/upload/v1764355472/search_images/5800ec9d31ad15a77c15145a56f3b9ad20b8c1ed.jpg"
     },
@@ -22,7 +25,7 @@ const productsData = [
         id: 3,
         name: "Hydraulic Lift Kit",
         description: "DIY hydraulic lift model using syringes & pipes",
-        price: 399,
+        price: 299,
         category: "project-kits",
         image: "images/hydraulic-kit.jpeg"
     },
@@ -30,7 +33,7 @@ const productsData = [
         id: 4,
         name: "Bridge Model Kit",
         description: "Craft stick kit to build strong model bridges",
-        price: 199,
+        price: 159,
         category: "project-kits",
         image: "images/bridge-kit.jpeg"
     },
@@ -48,7 +51,7 @@ const productsData = [
         id: 13,
         name: "Resistor Kit",
         description: "300+ resistors in 30 different values",
-        price: 599,
+        price: 499,
         category: "project-items",
         image: "https://pplx-res.cloudinary.com/image/upload/v1764355481/search_images/4220bca833fe5f1b0ce5e705675731a75b113f3d.jpg"
     },
@@ -56,7 +59,7 @@ const productsData = [
         id: 14,
         name: "Sensor Module Set",
         description: "10 different sensor modules for projects",
-        price: 599,
+        price: 499,
         category: "project-items",
         image: "https://pplx-res.cloudinary.com/image/upload/v1764355481/search_images/a0e2991a09f25cc1aef3a3310d9cf07fa6458528.jpg"
     },
@@ -97,7 +100,7 @@ const productsData = [
         id: 19,
         name: "Thermocol Sheets",
         description: "3 thick thermocol sheets for model making",
-        price: 89,
+        price: 59,
         category: "project-items",
         image: "https://pplx-res.cloudinary.com/image/upload/v1764355776/search_images/a51378c8ee31746bb7946d0e79508ae995f2a969.jpg"
     },
@@ -140,7 +143,7 @@ const productsData = [
         id: 24,
         name: "A3 Poster Printing",
         description: "High-quality poster printing for school projects",
-        price: 25,
+        price: 29,
         category: "prints",
         image: "https://pplx-res.cloudinary.com/image/upload/v1764355775/search_images/e991eea6c7fcb2a3383a26d455b82fa2ae435d27.jpg"
     },
@@ -181,14 +184,6 @@ const productsData = [
         name: "File Folder Printing",
         description: "Custom printed project folders",
         price: 40,
-        category: "prints",
-        image: "https://pplx-res.cloudinary.com/image/upload/v1764355775/search_images/e991eea6c7fcb2a3383a26d455b82fa2ae435d27.jpg"
-    },
-    {
-        id: 30,
-        name: "ID Card Printing",
-        description: "Instant printed ID cards",
-        price: 60,
         category: "prints",
         image: "https://pplx-res.cloudinary.com/image/upload/v1764355775/search_images/e991eea6c7fcb2a3383a26d455b82fa2ae435d27.jpg"
     },
@@ -276,7 +271,7 @@ const productsData = [
         category: "essentials",
         image: "https://pplx-res.cloudinary.com/image/upload/v1764355785/search_images/d1f682304a871f9a1723724377fa53b7d0e976b6.jpg"
     },
-
+ 
     // STUDY SUPPLIES
     {
         id: 41,
@@ -290,7 +285,7 @@ const productsData = [
         id: 42,
         name: "Pen Set Premium",
         description: "Pack of 10 ballpoint pens",
-        price: 149,
+        price: 99,
         category: "study",
         image: "https://pplx-res.cloudinary.com/image/upload/v1764355660/search_images/6c234b2321bef53f6dd3186023065fb1cea68161.jpg"
     },
@@ -305,8 +300,8 @@ const productsData = [
     {
         id: 44,
         name: "Sticky Notes Pack",
-        description: "Colorful sticky notes - pack of 6",
-        price: 79,
+        description: "Colorful sticky notes",
+        price: 49,
         category: "study",
         image: "https://m.media-amazon.com/images/I/71spLX1XYBL.jpg"
     },
@@ -322,7 +317,7 @@ const productsData = [
         id: 46,
         name: "A4 Sheets Pack (100)",
         description: "High-quality A4 printing sheets",
-        price: 149,
+        price: 119,
         category: "study",
         image: "https://pplx-res.cloudinary.com/image/upload/v1764355669/search_images/c7686f9e351cf1ea116cd7ea08b5c3563529aa5b.jpg"
     },
@@ -338,7 +333,7 @@ const productsData = [
         id: 48,
         name: "Sharpener Metal",
         description: "Durable metal blade sharpener",
-        price: 29,
+        price: 7,
         category: "study",
         image: "https://pplx-res.cloudinary.com/image/upload/v1764355669/search_images/bc71ed01bd9a2820457e839d821c7594c0cff53e.jpg"
     },
@@ -374,4 +369,3 @@ const config = {
         'STUDENT20': { discount: 20, type: 'percent' }
     }
 };
-
